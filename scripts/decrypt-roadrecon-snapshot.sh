@@ -13,7 +13,7 @@ valid_snapshot() {
   [[ -f "${DATABASE_FILE}" ]] || return 1
   [[ -f "${DATABASE_CHECKSUM_FILE}" ]] || return 1
   sha256sum -c "${DATABASE_CHECKSUM_FILE}" >/dev/null 2>&1 || return 1
-  [[ "$(dd if="${DATABASE_FILE}" bs=16 count=1 2>/dev/null || true)" == "SQLite format 3" ]]
+  [[ "$(dd if="${DATABASE_FILE}" bs=15 count=1 2>/dev/null || true)" == "SQLite format 3" ]]
 }
 
 if valid_snapshot; then
@@ -41,7 +41,7 @@ cp "${DATABASE_CHECKSUM_FILE}" "${DECRYPT_DIR}/${DATABASE_CHECKSUM_FILE}"
   sha256sum -c "${DATABASE_CHECKSUM_FILE}"
 )
 
-if [[ "$(dd if="${DECRYPT_DIR}/${DATABASE_FILE}" bs=16 count=1 2>/dev/null || true)" != "SQLite format 3" ]]; then
+if [[ "$(dd if="${DECRYPT_DIR}/${DATABASE_FILE}" bs=15 count=1 2>/dev/null || true)" != "SQLite format 3" ]]; then
   echo "error: decrypted roadrecon.db is not a valid SQLite database" >&2
   exit 65
 fi

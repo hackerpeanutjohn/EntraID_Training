@@ -7,7 +7,7 @@ cd "${REPO_ROOT}"
 
 bash scripts/decrypt-roadrecon-snapshot.sh
 
-SQLITE_SIGNATURE="$(dd if=roadrecon.db bs=16 count=1 2>/dev/null || true)"
+SQLITE_SIGNATURE="$(dd if=roadrecon.db bs=15 count=1 2>/dev/null || true)"
 if [[ "${SQLITE_SIGNATURE}" != "SQLite format 3" ]]; then
   echo "error: roadrecon.db is not a valid SQLite database" >&2
   exit 65

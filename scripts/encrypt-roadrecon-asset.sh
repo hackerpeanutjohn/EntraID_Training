@@ -15,7 +15,7 @@ OUTPUT_DIRECTORY="${2:-release-assets}"
   exit 66
 }
 
-if [[ "$(dd if="${SOURCE_DATABASE}" bs=16 count=1 2>/dev/null || true)" != "SQLite format 3" ]]; then
+if [[ "$(dd if="${SOURCE_DATABASE}" bs=15 count=1 2>/dev/null || true)" != "SQLite format 3" ]]; then
   echo "error: source file is not a valid SQLite database" >&2
   exit 65
 fi
