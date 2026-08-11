@@ -5,11 +5,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${REPO_ROOT}"
 
-if [[ ! -f roadrecon.db ]]; then
-  echo "error: roadrecon.db is missing" >&2
-  echo "Ask the instructor for the course snapshot, then upload it to the repository root." >&2
-  exit 66
-fi
+bash scripts/fetch-roadrecon-snapshot.sh
 
 SQLITE_SIGNATURE="$(dd if=roadrecon.db bs=16 count=1 2>/dev/null || true)"
 if [[ "${SQLITE_SIGNATURE}" != "SQLite format 3" ]]; then

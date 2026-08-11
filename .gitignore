@@ -6,3 +6,4 @@
 
 # The course snapshot may contain tenant data. Review it before committing.
 roadrecon.db
+roadrecon.db.sha256

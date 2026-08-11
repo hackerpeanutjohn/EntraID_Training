@@ -16,7 +16,7 @@
 
 ## 啟動 Lab
 
-講師必須先把課程用的 `roadrecon.db` 放在 repository 根目錄。檔案缺失或不是有效的 SQLite database 時，啟動腳本會直接停止。
+Codespace 第一次建立時會從 private GitHub Release 自動下載 `roadrecon.db`，並驗證 SHA-256。學生不需要手動上傳檔案。
 
 在 Codespaces Terminal 執行：
 
@@ -70,9 +70,15 @@ bash scripts/stop-lab.sh --delete-workspace
 
 ## 常見問題
 
-### 找不到 `roadrecon.db`
+### 無法下載 `roadrecon.db`
 
-向講師取得課程 snapshot。不要自行建立空白檔案，否則後面的 ROADrecon Lab 會失敗。
+在 Terminal 執行：
+
+```bash
+bash scripts/fetch-roadrecon-snapshot.sh
+```
+
+如果仍失敗，把完整輸出交給講師。不要自行建立空白檔案，否則後面的 ROADrecon Lab 會失敗。
 
 ### Port `6080` 沒出現
 
