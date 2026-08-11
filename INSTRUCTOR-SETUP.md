@@ -1,55 +1,60 @@
 # Instructor Setup
 
-學生不需要自行上傳 `roadrecon.db`。講師把 snapshot 與 checksum 放進固定 tag 的 private GitHub Release，Codespace 第一次建立時會自動下載。
+學生不需要自行上傳 `roadrecon.db`。講師先用 `age` 加密 snapshot，再把密文與 checksum 放進固定 tag 的 GitHub Release。Repository 在上課期間轉成 Public，也不會直接公開資料庫內容。
 
-## Repository 權限
+> 密碼只在現場公布。不要寫進 repository、Release 說明、Notion、投影片或聊天紀錄。
 
-這個 repository 必須符合其中一種設定：
+## 準備加密檔案
 
-- Private organization repository，學生只有 read access。這是建議做法。
-- Private personal repository，學生以 collaborator 身分加入。請注意 personal repository 的 collaborator 會取得 write access。
-- Public repository，只有在 `roadrecon.db` 已確認可以公開時才使用。
+電腦需先安裝 [`age`](https://github.com/FiloSottile/age)。在本 repository 執行：
+
+```bash
+bash scripts/encrypt-roadrecon-asset.sh \
+  /path/to/roadrecon.db \
+  release-assets
+```
+
+依照畫面提示輸入同一組課程密碼。完成後會產生：
+
+- `release-assets/roadrecon.db.age`
+- `release-assets/roadrecon.db.age.sha256`
+- `release-assets/roadrecon.db.sha256`
+
+原始的 `roadrecon.db` 不會被複製到輸出目錄。
 
 ## 第一次建立 Release
 
-在存放正式 `roadrecon.db` 的目錄執行：
-
 ```bash
-sha256sum roadrecon.db > roadrecon.db.sha256
-
 gh release create course-assets \
-  roadrecon.db \
-  roadrecon.db.sha256 \
+  release-assets/roadrecon.db.age \
+  release-assets/roadrecon.db.age.sha256 \
+  release-assets/roadrecon.db.sha256 \
   --repo hackerpeanutjohn/EntraID_Training \
   --title "Course assets" \
-  --notes "Private runtime assets for the Entra ID training Codespace."
-```
-
-macOS 若沒有 `sha256sum`，改用：
-
-```bash
-shasum -a 256 roadrecon.db > roadrecon.db.sha256
+  --notes "Encrypted runtime assets for the Entra ID training Codespace."
 ```
 
 ## 更新 Snapshot
 
-更新時沿用同一個 Release tag，學生端不必換連結：
+重新執行加密 script 後，沿用同一個 Release tag：
 
 ```bash
-sha256sum roadrecon.db > roadrecon.db.sha256
-
 gh release upload course-assets \
-  roadrecon.db \
-  roadrecon.db.sha256 \
+  release-assets/roadrecon.db.age \
+  release-assets/roadrecon.db.age.sha256 \
+  release-assets/roadrecon.db.sha256 \
   --repo hackerpeanutjohn/EntraID_Training \
   --clobber
 ```
 
+每一梯建議更換密碼並重新加密。學生拿到密碼後，本來就能取得明文資料庫；加密的用途是避免 repository 暫時公開時，未參與課程的人直接下載使用。
+
 ## 課前驗證
 
 1. 用測試學生帳號建立全新的 Codespace。
-2. 確認建立過程出現 `ROADrecon snapshot downloaded and verified`。
-3. 執行 `bash scripts/start-lab.sh`。
-4. 確認 workstation 為 `healthy`。
-5. 確認 Private Port `6080` 能開啟 Linux Desktop。
-6. 確認 container 內的 `/course/roadrecon.db` 可讀。
+2. 確認建立過程出現 `Encrypted ROADrecon asset downloaded and verified`。
+3. 執行 `bash scripts/start-lab.sh`，確認 Terminal 會要求輸入密碼。
+4. 輸入本梯密碼，確認 checksum 與 SQLite 格式驗證通過。
+5. 確認 workstation 為 `healthy`。
+6. 確認 Private Port `6080` 能開啟 Linux Desktop。
+7. 確認 container 內的 `/course/roadrecon.db` 可讀。

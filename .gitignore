@@ -4,6 +4,9 @@
 *.tar
 *.tar.gz
 
-# The course snapshot may contain tenant data. Review it before committing.
+# Course assets are distributed through a GitHub Release, not Git history.
 roadrecon.db
 roadrecon.db.sha256
+roadrecon.db.age
+roadrecon.db.age.sha256
+release-assets/

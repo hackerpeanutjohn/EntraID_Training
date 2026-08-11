@@ -16,13 +16,15 @@
 
 ## 啟動 Lab
 
-Codespace 第一次建立時會從 private GitHub Release 自動下載 `roadrecon.db`，並驗證 SHA-256。學生不需要手動上傳檔案。
+Codespace 第一次建立時會從 GitHub Release 自動下載加密過的 `roadrecon.db.age`，並驗證 SHA-256。學生不需要手動上傳檔案。
 
 在 Codespaces Terminal 執行：
 
 ```bash
 bash scripts/start-lab.sh
 ```
+
+第一次執行時，Terminal 會要求輸入講師現場公布的解密密碼。輸入時畫面不會顯示字元，輸入完直接按 Enter。系統會驗證解密後的資料庫，再啟動 Lab。
 
 看到 `Lab workstation is ready` 後：
 
@@ -70,7 +72,7 @@ bash scripts/stop-lab.sh --delete-workspace
 
 ## 常見問題
 
-### 無法下載 `roadrecon.db`
+### 無法下載加密檔案
 
 在 Terminal 執行：
 
@@ -79,6 +81,16 @@ bash scripts/fetch-roadrecon-snapshot.sh
 ```
 
 如果仍失敗，把完整輸出交給講師。不要自行建立空白檔案，否則後面的 ROADrecon Lab 會失敗。
+
+### 密碼錯誤或解密失敗
+
+重新執行：
+
+```bash
+bash scripts/start-lab.sh
+```
+
+確認大小寫與底線都正確。密碼輸入時畫面不會顯示任何字元，這是正常現象。
 
 ### Port `6080` 沒出現
 

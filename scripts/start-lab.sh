@@ -5,7 +5,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${REPO_ROOT}"
 
-bash scripts/fetch-roadrecon-snapshot.sh
+bash scripts/decrypt-roadrecon-snapshot.sh
 
 SQLITE_SIGNATURE="$(dd if=roadrecon.db bs=16 count=1 2>/dev/null || true)"
 if [[ "${SQLITE_SIGNATURE}" != "SQLite format 3" ]]; then
