@@ -1,0 +1,8 @@
+.DS_Store
+.env
+*.zip
+*.tar
+*.tar.gz
+
+# The course snapshot may contain tenant data. Review it before committing.
+roadrecon.db

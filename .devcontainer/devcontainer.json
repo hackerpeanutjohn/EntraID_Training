@@ -1,0 +1,29 @@
+{
+  "name": "HITCON Entra ID Training",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {
+      "moby": true,
+      "dockerDashComposeVersion": "latest"
+    }
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": [6080, 15000],
+  "portsAttributes": {
+    "6080": {
+      "label": "Course Linux Desktop",
+      "onAutoForward": "notify",
+      "protocol": "http"
+    },
+    "15000": {
+      "label": "ROADrecon GUI",
+      "onAutoForward": "silent",
+      "protocol": "http"
+    }
+  },
+  "postCreateCommand": "bash scripts/codespace-prepare.sh"
+}

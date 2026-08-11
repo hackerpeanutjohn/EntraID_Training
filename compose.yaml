@@ -1,0 +1,30 @@
+name: hitcon26-entra-student
+
+services:
+  workstation:
+    image: ${STUDENT_IMAGE:-jjdock1112/entraid_testtool:tagname}
+    pull_policy: missing
+    init: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    shm_size: 512m
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=268435456,uid=1000,gid=1000
+    ports:
+      - "${STUDENT_DESKTOP_BIND:-0.0.0.0}:${STUDENT_DESKTOP_PORT:-6080}:6080"
+      - "${STUDENT_ROADRECON_GUI_BIND:-0.0.0.0}:${STUDENT_ROADRECON_GUI_PORT:-15000}:5000"
+    volumes:
+      - student-workspace:/workspace
+      - type: bind
+        source: ${STUDENT_ROADRECON_SNAPSHOT:-./roadrecon.db}
+        target: /course/roadrecon.db
+        read_only: true
+        bind:
+          create_host_path: false
+
+volumes:
+  student-workspace:
+    name: ${STUDENT_WORKSPACE_VOLUME:-hitcon26-entra-student-workspace}
